@@ -1156,6 +1156,7 @@ func (fs *FSObjects) DeleteObjects(ctx context.Context, bucket string, objects [
 	errs := make([]error, len(objects))
 	dobjects := make([]DeletedObject, len(objects))
 	for idx, object := range objects {
+		// FSObject do not support version, so any delete request with an id should be taken as invalid
 		if object.VersionID != "" {
 			errs[idx] = VersionNotFound{
 				Bucket:    bucket,
