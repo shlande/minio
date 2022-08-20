@@ -971,10 +971,6 @@ func (fs *FSObjects) getObjectInfoWithLock(ctx context.Context, bucket, object s
 		return oi, err
 	}
 
-	if strings.HasSuffix(object, SlashSeparator) && !fs.isObjectDir(bucket, object) {
-		return oi, errFileNotFound
-	}
-
 	return fs.getObjectInfo(ctx, bucket, object)
 }
 
