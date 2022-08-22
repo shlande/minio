@@ -8,6 +8,7 @@ import (
 )
 
 type BucketBase interface {
+	Shutdown(ctx context.Context) error
 	BucketInfo() cmd.BucketInfo
 	// GetPolicy 获取bucket的权限
 	GetPolicy(context.Context, string) (*policy.Policy, error)
@@ -15,7 +16,8 @@ type BucketBase interface {
 
 type BucketReadable interface {
 	BucketBase
-	ListObjectsV2(ctx context.Context, prefix, continuationToken, delimiter string, maxKeys int, fetchOwner bool, startAfter string) (result cmd.ListObjectsV2Info, err error)
+	// ListObjectsV2 startAfter is supported comparing with s3
+	ListObjectsV2(ctx context.Context, prefix, continuationToken, delimiter string, maxKeys int, fetchOwner bool) (result cmd.ListObjectsV2Info, err error)
 	// Walk lists all objects including versions, delete markers.
 	Walk(ctx context.Context, prefix string, results chan<- cmd.ObjectInfo, opts cmd.ObjectOptions) error
 
