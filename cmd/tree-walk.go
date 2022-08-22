@@ -86,7 +86,7 @@ type ListDirFunc func(bucket, prefixDir, prefixEntry string) (emptyDir bool, ent
 // IsLeafFunc - A function isLeaf of type isLeafFunc is used to detect if an
 // entry is a leaf entry. There are 2 scenarios where isLeaf should behave
 // differently depending on the backend:
-// 1. FS backend object listing - isLeaf is true if the entry
+// 1. FSObjects isLeaf: backend object listing - isLeaf is true if the entry
 //    has no trailing "/"
 // 2. Erasure backend object listing - isLeaf is true if the entry
 //    is a directory and contains xl.meta

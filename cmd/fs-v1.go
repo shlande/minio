@@ -1248,10 +1248,12 @@ func (fs *FSObjects) isLeaf(bucket string, leafPath string) bool {
 // Returns function "listDir" of the type listDirFunc.
 // isLeaf - is used by listDir function to check if an entry
 // is a leaf or non-leaf entry.
+// 生成一个ListDirFunc,这里直接用的是文件系统访问
 func (fs *FSObjects) listDirFactory() ListDirFunc {
 	// listDir - lists all the entries at a given prefix and given entry in the prefix.
 	listDir := func(bucket, prefixDir, prefixEntry string) (emptyDir bool, entries []string, delayIsLeaf bool) {
 		var err error
+		// 尝试读取 bucket + prefixDir 组成地址，并获取文件信息
 		entries, err = readDir(pathJoin(fs.fsPath, bucket, prefixDir))
 		if err != nil && err != errFileNotFound {
 			logger.LogIf(GlobalContext, err)
@@ -1260,6 +1262,7 @@ func (fs *FSObjects) listDirFactory() ListDirFunc {
 		if len(entries) == 0 {
 			return true, nil, false
 		}
+		// 筛选出所有
 		entries, delayIsLeaf = filterListEntries(bucket, prefixDir, entries, prefixEntry, fs.isLeaf)
 		return false, entries, delayIsLeaf
 	}
